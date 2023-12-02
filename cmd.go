@@ -24,11 +24,11 @@ func main() {
 
 	switch dayNumber {
 	case 1:
-		resultP1 := Part1(input)
+		resultP1 := Day1_Part1(input)
 		fmt.Println("Part 1 Solution:", resultP1)
 
 		// Solve Part 2
-		resultP2 := Part2(input)
+		resultP2 := Day1_Part2(input)
 		fmt.Println("Part 2 Solution:", resultP2)
 	default:
 		fmt.Printf("Implment Day %d please\n", dayNumber)

@@ -7,7 +7,7 @@ import (
 )
 
 func Test_Day1_Part1(t *testing.T) {
-	result := Part1(`1abc2
+	result := Day1_Part1(`1abc2
 	pqr3stu8vwx
 	a1b2c3d4e5f
 	treb7uchet`)
@@ -15,7 +15,7 @@ func Test_Day1_Part1(t *testing.T) {
 }
 
 func Test_Day1_Part2(t *testing.T) {
-	result := Part2(`two1nine
+	result := Day1_Part2(`two1nine
 	eightwothree
 	abcone2threexyz
 	xtwone3four
