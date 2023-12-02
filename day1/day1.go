@@ -6,57 +6,42 @@ import (
 	"unicode"
 )
 
-func Part1(input string) int {
-	words := strings.Fields(input)
-	var b [][]rune
-	for _, line := range words {
+func Part1(input string) (result int) {
+	for _, line := range strings.Fields(input) {
 		var filteredLine []rune
 		for _, c := range line {
 			if !unicode.IsLetter(c) {
 				filteredLine = append(filteredLine, c)
 			}
 		}
-		b = append(b, filteredLine)
+		num, _ := strconv.Atoi(string(filteredLine[0]) + string(filteredLine[len(filteredLine)-1]))
+		result += num
 	}
-
-	var acc []int
-	for _, i := range b {
-		if len(i) > 0 {
-			num, _ := strconv.Atoi(string(i[0]) + string(i[len(i)-1]))
-			acc = append(acc, num)
-		}
-	}
-	sumP1 := 0
-	for _, val := range acc {
-		sumP1 += val
-	}
-	return sumP1
+	return result
 }
 
-func Part2(input string) int {
-	lookup := []string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
-	words := strings.Fields(input)
-	acc := 0
-
-	for _, line := range words {
+func Part2(input string) (result int) {
+	for _, line := range strings.Fields(input) {
 		parsed := []string{}
 		for idx := 0; idx < len(line); idx++ {
 			if !unicode.IsLetter(rune(line[idx])) {
 				parsed = append(parsed, string(line[idx]))
 			} else {
-				for num, text := range lookup {
+				for num, text := range numbers {
 					if idx+len(text) <= len(line) && line[idx:idx+len(text)] == text {
 						parsed = append(parsed, strconv.Itoa(num+1))
-						idx += len(text) - 1
-						break
 					}
 				}
 			}
 		}
 		if len(parsed) > 0 {
 			num, _ := strconv.Atoi(parsed[0] + parsed[len(parsed)-1])
-			acc += num
+			result += num
 		}
 	}
-	return acc
+	return result
 }
+
+var (
+	numbers = []string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
+)
