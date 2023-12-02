@@ -1,4 +1,4 @@
-package day2
+package dayn
 
 func Part1(input string) (result int) {
 	return result
