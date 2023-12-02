@@ -1,4 +1,4 @@
-package main
+package day1
 
 import (
 	"strconv"
@@ -6,7 +6,7 @@ import (
 	"unicode"
 )
 
-func Day1_Part1(input string) int {
+func Part1(input string) int {
 	words := strings.Fields(input)
 	var b [][]rune
 	for _, line := range words {
@@ -33,7 +33,7 @@ func Day1_Part1(input string) int {
 	return sumP1
 }
 
-func Day1_Part2(input string) int {
+func Part2(input string) int {
 	lookup := []string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
 	words := strings.Fields(input)
 	acc := 0

@@ -4,7 +4,17 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"ukr/aoc23/day1"
+	"ukr/aoc23/day2"
 )
+
+func LoadFile(filename string) (string, error) {
+	data, err := os.ReadFile(filename)
+	if err != nil {
+		return "", err
+	}
+	return string(data), nil
+}
 
 func main() {
 
@@ -22,15 +32,19 @@ func main() {
 
 	input, _ := LoadFile(fmt.Sprintf("inputs/day%d.txt", dayNumber))
 
+	result1, result2 := 0, 0
+
 	switch dayNumber {
 	case 1:
-		resultP1 := Day1_Part1(input)
-		fmt.Println("Part 1 Solution:", resultP1)
-
-		// Solve Part 2
-		resultP2 := Day1_Part2(input)
-		fmt.Println("Part 2 Solution:", resultP2)
+		result1 = day1.Part1(input)
+		result2 = day1.Part2(input)
+	case 2:
+		result1 = day2.Part1(input)
+		result2 = day2.Part2(input)
 	default:
 		fmt.Printf("Implment Day %d please\n", dayNumber)
+		return
 	}
+	fmt.Println("Part 1 Solution:", result1)
+	fmt.Println("Part 2 Solution:", result2)
 }
