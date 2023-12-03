@@ -4,18 +4,11 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"ukr/aoc23/commons"
 	"ukr/aoc23/day1"
 	"ukr/aoc23/day2"
 	"ukr/aoc23/day3"
 )
-
-func LoadFile(filename string) (string, error) {
-	data, err := os.ReadFile(filename)
-	if err != nil {
-		return "", err
-	}
-	return string(data), nil
-}
 
 func main() {
 
@@ -31,7 +24,7 @@ func main() {
 		return
 	}
 
-	input, _ := LoadFile(fmt.Sprintf("inputs/day%d.txt", dayNumber))
+	input, _ := commons.LoadFile(fmt.Sprintf("inputs/day%d.txt", dayNumber))
 
 	result1, result2 := 0, 0
 
