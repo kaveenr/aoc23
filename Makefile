@@ -1,14 +1,31 @@
-.PHONY: install run test new scrape
--include .env
+.PHONY: help
+help:
+	@echo "Available targets:"
+	@echo "- install: Install dependencies"
+	@echo "- run day=<day_number>: Run the code for a specific day"
+	@echo "- test: Run tests"
+	@echo "- new day=<day_number>: Create from template"
+	@echo "- scrape year=<year> day=<day_number>: Scrape challange and input from site"
+	@echo ""
+	@echo "Hints: by default <year>,<day> will be set to current EST date"
+
+.PHONY: install run test
 
 install:
 	go install
+	go test ./...
 
 run:
 	go run . $(day)
 
 test:
 	go test  -cover ./...
+
+
+.PHONY: new scrape
+-include .env
+year = $(shell env TZ=EST date +"%Y")
+day = $(shell env TZ=EST date +"%-d")
 
 new:
 	@cp dayn/dayn.go day$(day)/day$(day).go
@@ -28,12 +45,3 @@ scrape:
 		| pandoc  --from=html --to=plain \
 		> challanges/day$(day).txt
 	@echo "Scraped Day $(day) for $(year)"
-
-.PHONY: help
-help:
-	@echo "Available targets:"
-	@echo "- install: Install dependencies"
-	@echo "- run day=<day_number>: Run the code for a specific day"
-	@echo "- test: Run tests"
-	@echo "- new day=<day_number>: Create from template"
-	@echo "- scrape year=<year> day=<day_number>: Scrape challange and input from site"

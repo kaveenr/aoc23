@@ -10,11 +10,13 @@
 ## Instuctions
 
 ```sh
-$ make help
+$ make
 Available targets:
 - install: Install dependencies
 - run day=<day_number>: Run the code for a specific day
 - test: Run tests
 - new day=<day_number>: Create from template
 - scrape year=<year> day=<day_number>: Scrape challange and input from site
+
+Hints: by default <year>,<day> will be set to current EST date
 ```

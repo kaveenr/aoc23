@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"ukr/aoc23/day1"
 	"ukr/aoc23/day2"
+	"ukr/aoc23/day3"
 )
 
 func LoadFile(filename string) (string, error) {
@@ -39,6 +40,8 @@ func main() {
 		result1, result2 = day1.Part1(input), day1.Part2(input)
 	case 2:
 		result1, result2 = day2.Part1(input), day2.Part2(input)
+	case 3:
+		result1, result2 = day3.Part1(input), day3.Part2(input)
 	default:
 		fmt.Printf("Implment Day %d please\n", dayNumber)
 		return

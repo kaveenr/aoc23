@@ -48,6 +48,9 @@ func parseGame(input string) games {
 	games := make(games)
 	for _, line := range strings.Split(input, "\n") {
 		parts := strings.Split(line, ":")
+		if len(parts) != 2 {
+			break
+		}
 		id, _ := strconv.Atoi(strings.Split(parts[0], " ")[1])
 		sets := strings.Split(parts[1], ";")
 		games[id] = make(game, len(sets))
