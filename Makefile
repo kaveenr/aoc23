@@ -18,7 +18,7 @@ run:
 	go run . $(day)
 
 test:
-	@go test  -cover $(shell go list ./... | grep -E /day\\d)
+	@go test  -cover $(shell go list ./... | grep -E "/day\\d")
 
 .PHONY: new scrape
 -include .env
@@ -33,7 +33,7 @@ new:
 	@echo "Created from template ./day$(day)/"
 
 scrape:
-	mkdir -p challanges
+	mkdir -p puzzles
 	@curl https://adventofcode.com/$(year)/day/$(day)/input \
 		-b "session=${AOC_SESSION}" \
 		> inputs/day$(day).txt
@@ -41,5 +41,5 @@ scrape:
 		-b "session=${AOC_SESSION}" \
 		| sed -n '/<main>/,/<\/main>/p' \
 		| pandoc  --from=html --to=plain \
-		> challanges/day$(day).txt
+		> puzzles/day$(day).txt
 	@echo "Scraped Day $(day) for $(year)"
