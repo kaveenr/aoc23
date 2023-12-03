@@ -1,6 +1,7 @@
 package day2
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/kaveenr/aoc23/commons"
@@ -26,6 +27,26 @@ func Test_Day2_Part1(t *testing.T) {
 func Test_Day2_Part2(t *testing.T) {
 	result := Part2(myPuzzleInput)
 	assert.Equal(t, 62241, result)
+}
+
+func Benchmark_Day2_Part1(b *testing.B) {
+	for _, v := range []string{testInput, myPuzzleInput} {
+		b.Run(fmt.Sprintf("input_size_%d", len(v)), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				Part1(v)
+			}
+		})
+	}
+}
+
+func Benchmark_Day2_Part2(b *testing.B) {
+	for _, v := range []string{testInput, myPuzzleInput} {
+		b.Run(fmt.Sprintf("input_size_%d", len(v)), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				Part2(v)
+			}
+		})
+	}
 }
 
 var myPuzzleInput, _ = commons.LoadFile(`../inputs/day2.txt`)

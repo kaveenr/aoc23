@@ -1,6 +1,7 @@
 package dayn
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/kaveenr/aoc23/commons"
@@ -9,12 +10,12 @@ import (
 )
 
 func Test_Dayn_Part1_Example(t *testing.T) {
-	result := Part1(``)
+	result := Part1(testInput)
 	assert.Equal(t, 0, result)
 }
 
 func Test_Dayn_Part2_Example(t *testing.T) {
-	result := Part2(``)
+	result := Part2(testInput)
 	assert.Equal(t, 0, result)
 }
 
@@ -27,5 +28,27 @@ func Test_Dayn_Part2(t *testing.T) {
 	result := Part2(myPuzzleInput)
 	assert.Equal(t, 0, result)
 }
+func Benchmark_Dayn_Part1(b *testing.B) {
+	for _, v := range []string{testInput, myPuzzleInput} {
+		b.Run(fmt.Sprintf("input_size_%d", len(v)), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				Part2(v)
+			}
+		})
+	}
+}
+
+func Benchmark_Dayn_Part2(b *testing.B) {
+	for _, v := range []string{testInput, myPuzzleInput} {
+		b.Run(fmt.Sprintf("input_size_%d", len(v)), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				Part1(v)
+			}
+		})
+	}
+}
 
 var myPuzzleInput, _ = commons.LoadFile(`../inputs/dayn.txt`)
+var (
+	testInput = ``
+)

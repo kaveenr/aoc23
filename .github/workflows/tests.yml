@@ -23,3 +23,19 @@ jobs:
 
     - name: Test
       run: make test
+
+  bench:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.21'
+
+    - name: Dependencies
+      run: make install
+
+    - name: Test
+      run: make bench
