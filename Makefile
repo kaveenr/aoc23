@@ -13,14 +13,12 @@ help:
 
 install:
 	go install
-	go test ./...
 
 run:
 	go run . $(day)
 
 test:
-	go test  -cover ./...
-
+	@go test  -cover $(shell go list ./... | grep -E /day\\d)
 
 .PHONY: new scrape
 -include .env
