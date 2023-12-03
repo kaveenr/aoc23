@@ -1,5 +1,5 @@
 .PHONY: install run test new scrape
-include .env
+-include .env
 
 install:
 	go install
