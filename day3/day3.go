@@ -3,8 +3,9 @@ package day3
 import (
 	"strconv"
 	"strings"
-	. "ukr/aoc23/commons"
 	"unicode"
+
+	. "github.com/kaveenr/aoc23/commons"
 )
 
 func Part1(input string) (result int) {
@@ -13,8 +14,8 @@ func Part1(input string) (result int) {
 		for colIdx := 0; colIdx < sc.Cols(); colIdx++ {
 			cur := NewCoord(rowIdx, colIdx)
 			if unicode.IsNumber(sc.Get(cur)) {
-				ref := make([]rune, 0)
-				isAdjecent := false
+				buffer := make([]rune, 0)
+				var isAdjecent bool
 				var number int
 				for scanIdx := cur.Col; scanIdx < sc.Cols(); scanIdx++ {
 					ahead := NewCoord(cur.Row, scanIdx)
@@ -24,8 +25,8 @@ func Part1(input string) (result int) {
 					}
 					curAdjecent, _ := checkIfAdjecent(sc, matchAllComponents, ahead)
 					isAdjecent = curAdjecent || isAdjecent
-					ref = append(ref, sc.Get(ahead))
-					number, _ = strconv.Atoi(string(ref))
+					buffer = append(buffer, sc.Get(ahead))
+					number, _ = strconv.Atoi(string(buffer))
 				}
 				if isAdjecent {
 					result += number
@@ -43,11 +44,10 @@ func Part2(input string) (result int) {
 	for rowIdx := 0; rowIdx < sc.Rows(); rowIdx++ {
 		for colIdx := 0; colIdx < sc.Cols(); colIdx++ {
 			cur := NewCoord(rowIdx, colIdx)
-			var currentSymbol Coord
 			if unicode.IsNumber(sc.Get(cur)) {
-				ref := make([]rune, 0)
-				isAdjecent := false
-				var currentRatio int
+				buffer := make([]rune, 0)
+				var isAdjecent bool
+				var currentSymbolLoc Coord
 				for scanIdx := cur.Col; scanIdx < sc.Cols(); scanIdx++ {
 					ahead := NewCoord(cur.Row, scanIdx)
 					if !unicode.IsNumber(sc.Get(ahead)) {
@@ -55,16 +55,14 @@ func Part2(input string) (result int) {
 						break
 					}
 					curAdjecent, curSymbol := checkIfAdjecent(sc, matchGearComponents, ahead)
-					if curAdjecent {
-						currentSymbol = curSymbol
-					}
 					isAdjecent = curAdjecent || isAdjecent
-					ref = append(ref, sc.Get(ahead))
-					currentRatio, _ = strconv.Atoi(string(ref))
+					buffer = append(buffer, sc.Get(ahead))
+					if curAdjecent {
+						currentSymbolLoc = curSymbol
+					}
 				}
-				if isAdjecent {
-					gearMap[currentSymbol] = append(gearMap[currentSymbol], currentRatio)
-				}
+				currentRatio, _ := strconv.Atoi(string(buffer))
+				gearMap[currentSymbolLoc] = append(gearMap[currentSymbolLoc], currentRatio)
 			}
 		}
 	}
@@ -90,14 +88,12 @@ func parseGrid(input string) (res Grid) {
 }
 
 func checkIfAdjecent(sc Grid, match ComponentMacher, check Coord) (bool, Coord) {
-	for checkRowIdx := check.Row - 1; checkRowIdx <= check.Row+1; checkRowIdx++ {
-		for checkColIdx := check.Col - 1; checkColIdx <= check.Col+1; checkColIdx++ {
-			if (checkRowIdx >= 0 && checkRowIdx < sc.Rows()) && (checkColIdx >= 0 && checkColIdx < sc.Cols()) && match(sc[checkRowIdx][checkColIdx]) {
-				return true, NewCoord(checkRowIdx, checkColIdx)
-			}
+	for _, c := range sc.GetAdjecent(check, 1) {
+		if match(sc.Get(c)) {
+			return true, c
 		}
 	}
-	return false, NewCoord(-1, -1)
+	return false, Coord{}
 }
 
 type ComponentMacher func(cmp rune) bool

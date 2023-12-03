@@ -19,6 +19,18 @@ func (s Grid) Cols() int {
 	return 0
 }
 
+func (s Grid) GetAdjecent(c Coord, size int) (res []Coord) {
+	res = make([]Coord, 0)
+	for checkRowIdx := c.Row - size; checkRowIdx <= c.Row+size; checkRowIdx++ {
+		for checkColIdx := c.Col - size; checkColIdx <= c.Col+size; checkColIdx++ {
+			if (checkRowIdx >= 0 && checkRowIdx < s.Rows()) && (checkColIdx >= 0 && checkColIdx < s.Cols()) {
+				res = append(res, NewCoord(checkRowIdx, checkColIdx))
+			}
+		}
+	}
+	return res
+}
+
 func (s Grid) viz() {
 	for rowIdx := range s {
 		for colIdx := range s[rowIdx] {

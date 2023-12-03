@@ -1,4 +1,4 @@
-module ukr/aoc23
+module github.com/kaveenr/aoc23
 
 go 1.21
 

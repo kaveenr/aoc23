@@ -2,7 +2,8 @@ package dayn
 
 import (
 	"testing"
-	"ukr/aoc23/commons"
+
+	"github.com/kaveenr/aoc23/commons"
 
 	"github.com/stretchr/testify/assert"
 )

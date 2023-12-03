@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"ukr/aoc23/commons"
-	"ukr/aoc23/day1"
-	"ukr/aoc23/day2"
-	"ukr/aoc23/day3"
+
+	"github.com/kaveenr/aoc23/commons"
+	"github.com/kaveenr/aoc23/day1"
+	"github.com/kaveenr/aoc23/day2"
+	"github.com/kaveenr/aoc23/day3"
 )
 
 func main() {
