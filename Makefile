@@ -19,10 +19,10 @@ run:
 	go run . $(day)
 
 test:
-	@go test  -cover $(shell go list ./... | grep -e "/day\\d")
+	@go test  -cover $(shell go list ./...)
 
 bench:
-	@go test -benchmem -run=^$ -cover -bench . $(shell go list ./... | grep -e "/day\\d")
+	@go test -benchmem -run=^$ -cover -bench . $(shell go list ./...)
 
 .PHONY: new scrape
 -include .env
