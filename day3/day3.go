@@ -2,14 +2,13 @@ package day3
 
 import (
 	"strconv"
-	"strings"
 	"unicode"
 
 	. "github.com/kaveenr/aoc23/commons"
 )
 
 func Part1(input string) (result int) {
-	sc := parseGrid(input)
+	sc := NewGrid(input)
 	for rowIdx := 0; rowIdx < sc.Rows(); rowIdx++ {
 		for colIdx := 0; colIdx < sc.Cols(); colIdx++ {
 			cur := NewCoord(rowIdx, colIdx)
@@ -39,7 +38,7 @@ func Part1(input string) (result int) {
 }
 
 func Part2(input string) (result int) {
-	sc := parseGrid(input)
+	sc := NewGrid(input)
 	gearMap := make(map[Coord][]int)
 	for rowIdx := 0; rowIdx < sc.Rows(); rowIdx++ {
 		for colIdx := 0; colIdx < sc.Cols(); colIdx++ {
@@ -72,19 +71,6 @@ func Part2(input string) (result int) {
 		}
 	}
 	return result
-}
-
-func parseGrid(input string) (res Grid) {
-	res = make(Grid, 0)
-	for _, field := range strings.Split(strings.TrimSpace(input), "\n") {
-		field := strings.TrimSpace(field)
-		line := make([]rune, len(field))
-		for idx, char := range field {
-			line[idx] = char
-		}
-		res = append(res, line)
-	}
-	return res
 }
 
 func checkIfAdjecent(sc Grid, match ComponentMacher, check Coord) (bool, Coord) {

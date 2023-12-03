@@ -1,6 +1,9 @@
 package commons
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 type Grid [][]rune
 
@@ -38,4 +41,17 @@ func (s Grid) viz() {
 		}
 		fmt.Println()
 	}
+}
+
+func NewGrid(input string) (res Grid) {
+	res = make(Grid, 0)
+	for _, field := range strings.Split(strings.TrimSpace(input), "\n") {
+		field := strings.TrimSpace(field)
+		line := make([]rune, len(field))
+		for idx, char := range field {
+			line[idx] = char
+		}
+		res = append(res, line)
+	}
+	return res
 }
