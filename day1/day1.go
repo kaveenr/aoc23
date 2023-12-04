@@ -11,13 +11,13 @@ import (
 
 func Part1(input string) (result int) {
 	for _, line := range strings.Fields(input) {
-		var filteredLine []rune
+		var filtered []string
 		for _, c := range line {
 			if !unicode.IsLetter(c) {
-				filteredLine = append(filteredLine, c)
+				filtered = append(filtered, string(c))
 			}
 		}
-		num, _ := strconv.Atoi(string(filteredLine[0]) + string(filteredLine[len(filteredLine)-1]))
+		num, _ := strconv.Atoi(filtered[0] + filtered[len(filtered)-1])
 		result += num
 	}
 	return result
@@ -25,22 +25,20 @@ func Part1(input string) (result int) {
 
 func Part2(input string) (result int) {
 	for _, line := range strings.Fields(input) {
-		parsed := []string{}
+		var filtered []string
 		for idx := 0; idx < len(line); idx++ {
 			if !unicode.IsLetter(rune(line[idx])) {
-				parsed = append(parsed, string(line[idx]))
+				filtered = append(filtered, string(line[idx]))
 			} else {
 				for num, text := range numbers {
 					if idx+len(text) <= len(line) && line[idx:idx+len(text)] == text {
-						parsed = append(parsed, strconv.Itoa(num+1))
+						filtered = append(filtered, strconv.Itoa(num+1))
 					}
 				}
 			}
 		}
-		if len(parsed) > 0 {
-			num, _ := strconv.Atoi(parsed[0] + parsed[len(parsed)-1])
-			result += num
-		}
+		num, _ := strconv.Atoi(filtered[0] + filtered[len(filtered)-1])
+		result += num
 	}
 	return result
 }
