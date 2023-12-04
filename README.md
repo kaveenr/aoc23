@@ -1,5 +1,7 @@
 # AoC 2023
 
+[![Go Tests](https://github.com/kaveenr/aoc23/actions/workflows/tests.yml/badge.svg)](https://github.com/kaveenr/aoc23/actions/workflows/tests.yml)
+
 ## Prerequsites
 
 1. GNU + Darwin/Linux enviroment
