@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/kaveenr/aoc23/commons"
@@ -29,22 +28,14 @@ func Test_Day4_Part2(t *testing.T) {
 	assert.Equal(t, 5571760, result)
 }
 func Benchmark_Day4_Part1(b *testing.B) {
-	for _, v := range []string{testInput, myPuzzleInput} {
-		b.Run(fmt.Sprintf("input_size_%d", len(v)), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				Part1(v)
-			}
-		})
+	for i := 0; i < b.N; i++ {
+		Part1(testInput)
 	}
 }
 
 func Benchmark_Day4_Part2(b *testing.B) {
-	for _, v := range []string{testInput, myPuzzleInput} {
-		b.Run(fmt.Sprintf("input_size_%d", len(v)), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				Part2(v)
-			}
-		})
+	for i := 0; i < b.N; i++ {
+		Part2(testInput)
 	}
 }
 
