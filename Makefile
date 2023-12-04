@@ -32,8 +32,8 @@ day = $(shell env TZ=EST date +"%-d")
 
 new:
 	@mkdir day$(day)
-	@cp dayn/day.tmpl day$(day)/day$(day).go
-	@cp dayn/day_test.tmpl day$(day)/day$(day)_test.go
+	@cp template/day.tmpl day$(day)/day$(day).go
+	@cp template/day_test.tmpl day$(day)/day$(day)_test.go
 	@sed -i '' 's/ayn/ay$(day)/g' day$(day)/day$(day).go
 	@sed -i '' 's/ayn/ay$(day)/g' day$(day)/day$(day)_test.go
 	@echo "Created from template ./day$(day)/"
