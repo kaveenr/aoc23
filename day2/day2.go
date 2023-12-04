@@ -32,11 +32,7 @@ func Part1(input string) (result int) {
 
 func Part2(input string) (result int) {
 	for _, scene := range parseGame(input) {
-		counts := map[string][]int{
-			"red":   make([]int, 0),
-			"green": make([]int, 0),
-			"blue":  make([]int, 0),
-		}
+		counts := make(map[string][]int)
 		for _, try := range scene {
 			for color, count := range try {
 				counts[color] = append(counts[color], count)
@@ -47,8 +43,8 @@ func Part2(input string) (result int) {
 	return result
 }
 
-func parseGame(input string) games {
-	games := make(games)
+func parseGame(input string) PuzzleInput {
+	PuzzleInput := make(PuzzleInput)
 	for _, line := range strings.Split(input, "\n") {
 		parts := strings.Split(line, ":")
 		if len(parts) != 2 {
@@ -56,22 +52,22 @@ func parseGame(input string) games {
 		}
 		id, _ := strconv.Atoi(strings.Split(parts[0], " ")[1])
 		sets := strings.Split(parts[1], ";")
-		games[id] = make(game, len(sets))
+		PuzzleInput[id] = make(Game, len(sets))
 		for try, rolls := range sets {
-			rollDetail := make(gameRoll)
+			rollDetail := make(Roll)
 			for _, roll := range strings.Split(strings.TrimSpace(rolls), ",") {
 				rollParts := strings.Split(strings.TrimSpace(roll), " ")
 				rollDetail[rollParts[1]], _ = strconv.Atoi(rollParts[0])
 			}
-			games[id][try] = rollDetail
+			PuzzleInput[id][try] = rollDetail
 		}
 	}
-	return games
+	return PuzzleInput
 }
 
-type gameRoll = map[string]int
-type game = []gameRoll
-type games = map[int]game
+type Roll = map[string]int
+type Game = []Roll
+type PuzzleInput = map[int]Game
 
 var (
 	cubeCount = map[string]int{
