@@ -30,8 +30,8 @@ func Part1(input string) (result int) {
 
 func Part2(input string) (result int) {
 	cards, stack := ParsePuzzle(input), list.New()
-	for idx := 0; idx < len(cards); idx++ {
-		stack.PushBack(cards[idx+1])
+	for _, card := range cards {
+		stack.PushBack(card)
 	}
 	for stack.Len() > 0 {
 		element := stack.Front()
@@ -39,10 +39,8 @@ func Part2(input string) (result int) {
 		card, acc := element.Value.(Card), element.Value.(Card).Number
 		for _, num := range card.Numbers {
 			if slices.Contains(card.WiningNumbers, num) {
-				acc += 1
-				if val, ok := cards[acc]; ok {
-					stack.PushFront(val)
-				}
+				acc++
+				stack.PushFront(cards[acc-1])
 			}
 		}
 		result += 1
@@ -50,14 +48,15 @@ func Part2(input string) (result int) {
 	return result
 }
 
+// Assumption: Input is given in order
 func ParsePuzzle(input string) (res PuzzleInput) {
-	res = make(map[int]Card)
-	for idx, line := range strings.Split(strings.TrimSpace(input), "\n") {
-		cardnum := idx + 1
-		card := Card{
-			Number: cardnum,
-		}
+	lines := strings.Split(strings.TrimSpace(input), "\n")
+	res = make([]Card, len(lines))
+	for idx, line := range lines {
 		mainParts := strings.Split(line, ":")
+		card := Card{
+			Number: idx + 1,
+		}
 		numberParts := strings.Split(mainParts[1], "|")
 		for _, num := range strings.Split(strings.TrimSpace(numberParts[0]), " ") {
 			parsedNum, err := strconv.Atoi(num)
@@ -71,7 +70,7 @@ func ParsePuzzle(input string) (res PuzzleInput) {
 				card.Numbers = append(card.Numbers, parsedNum)
 			}
 		}
-		res[cardnum] = card
+		res[idx] = card
 	}
 	return res
 }
@@ -82,7 +81,7 @@ type Card struct {
 	Numbers       []int
 }
 
-type PuzzleInput = map[int]Card
+type PuzzleInput = []Card
 
 func main() {
 	myPuzzleInput, _ := commons.LoadFile(`input.txt`)
