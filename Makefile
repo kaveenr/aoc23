@@ -6,7 +6,8 @@ help:
 	@echo "- test: Run tests"
 	@echo "- bench: Run benchmarks"
 	@echo "- new day=<day_number>: Create from template"
-	@echo "- scrape year=<year> day=<day_number>: Scrape challange and input from site"
+	@echo "- scrape year=<year> day=<day_number>: Scrape puzzle and input from site"
+	@echo "- answer year=<year> day=<day_number> part=<part> answer=<answer>: Answer puzzle"
 	@echo ""
 	@echo "Hints: by default <year>,<day> will be set to current EST date"
 
@@ -48,3 +49,10 @@ scrape:
 		| pandoc  --from=html --to=plain \
 		> puzzles/day$(day).txt
 	@echo "Scraped Day $(day) for $(year)"
+
+answer:
+	@curl -X 'POST' 'https://adventofcode.com/$(year)/day/$(day)/answer' \
+		-b "session=${AOC_SESSION}" \
+		-H 'Content-Type: application/x-www-form-urlencoded' \
+		--data 'level=$(part)&answer=$(answer)' \
+		| sed -n '/<main>/,/<\/main>/p' \
