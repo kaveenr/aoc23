@@ -1,4 +1,4 @@
-package day1
+package main
 
 import (
 	"fmt"
@@ -49,9 +49,9 @@ func Benchmark_Day1_Part2(b *testing.B) {
 	}
 }
 
-var myPuzzleInput, _ = commons.LoadFile(`../inputs/day1.txt`)
 var (
-	testInputPart1 = `1abc2
+	myPuzzleInput, _ = commons.LoadFile(`input.txt`)
+	testInputPart1   = `1abc2
 	pqr3stu8vwx
 	a1b2c3d4e5f
 	treb7uchet`

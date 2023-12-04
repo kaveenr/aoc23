@@ -1,10 +1,13 @@
-package day4
+package main
 
 import (
 	"container/list"
+	"fmt"
 	"slices"
 	"strconv"
 	"strings"
+
+	"github.com/kaveenr/aoc23/commons"
 )
 
 func Part1(input string) (result int) {
@@ -80,3 +83,9 @@ type Card struct {
 }
 
 type PuzzleInput = map[int]Card
+
+func main() {
+	myPuzzleInput, _ := commons.LoadFile(`input.txt`)
+	fmt.Println("Part 1 Solution:", Part1(myPuzzleInput))
+	fmt.Println("Part 2 Solution:", Part2(myPuzzleInput))
+}

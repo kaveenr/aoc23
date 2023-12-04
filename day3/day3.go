@@ -1,9 +1,11 @@
-package day3
+package main
 
 import (
+	"fmt"
 	"strconv"
 	"unicode"
 
+	"github.com/kaveenr/aoc23/commons"
 	. "github.com/kaveenr/aoc23/commons"
 )
 
@@ -90,4 +92,10 @@ func matchAllComponents(cmp rune) bool {
 
 func matchGearComponents(cmp rune) bool {
 	return cmp == '*'
+}
+
+func main() {
+	myPuzzleInput, _ := commons.LoadFile(`input.txt`)
+	fmt.Println("Part 1 Solution:", Part1(myPuzzleInput))
+	fmt.Println("Part 2 Solution:", Part2(myPuzzleInput))
 }

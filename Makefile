@@ -17,7 +17,7 @@ install:
 	go install
 
 run:
-	go run . $(day)
+	cd ./day$(day) && go run .
 
 test:
 	@go test  -cover $(shell go list ./...)
@@ -37,18 +37,7 @@ new:
 	@sed -i '' 's/ayn/ay$(day)/g' day$(day)/day$(day).go
 	@sed -i '' 's/ayn/ay$(day)/g' day$(day)/day$(day)_test.go
 	@echo "Created from template ./day$(day)/"
-
-scrape:
-	mkdir -p puzzles
-	@curl -s https://adventofcode.com/$(year)/day/$(day)/input \
-		-b "session=${AOC_SESSION}" \
-		> inputs/day$(day).txt
-	@curl -s https://adventofcode.com/$(year)/day/$(day) \
-		-b "session=${AOC_SESSION}" \
-		| sed -n '/<main>/,/<\/main>/p' \
-		| pandoc  --from=html --to=plain \
-		> puzzles/day$(day).txt
-	@echo "Scraped Day $(day) for $(year)"
+	@make scrape
 
 answer:
 	@curl -s -X 'POST' 'https://adventofcode.com/$(year)/day/$(day)/answer' \
@@ -57,3 +46,15 @@ answer:
 		--data 'level=$(part)&answer=$(answer)' \
 		| sed -n '/<main>/,/<\/main>/p' \
 		| pandoc  --from=html --to=plain
+	@make scrape
+
+scrape:
+	@curl -s https://adventofcode.com/$(year)/day/$(day)/input \
+		-b "session=${AOC_SESSION}" \
+		> day$(day)/input.txt
+	@curl -s https://adventofcode.com/$(year)/day/$(day) \
+		-b "session=${AOC_SESSION}" \
+		| sed -n '/<main>/,/<\/main>/p' \
+		| pandoc  --from=html --to=plain \
+		> day$(day)/puzzle.txt
+	@echo "Scraped Day $(day) for $(year)"

@@ -1,4 +1,10 @@
-package dayn
+package main
+
+import (
+	"fmt"
+
+	"github.com/kaveenr/aoc23/commons"
+)
 
 func Part1(input string) (result int) {
 	return result
@@ -6,4 +12,10 @@ func Part1(input string) (result int) {
 
 func Part2(input string) (result int) {
 	return result
+}
+
+func main() {
+	myPuzzleInput, _ := commons.LoadFile(`input.txt`)
+	fmt.Println("Part 1 Solution:", Part1(myPuzzleInput))
+	fmt.Println("Part 2 Solution:", Part2(myPuzzleInput))
 }

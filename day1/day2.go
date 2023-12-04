@@ -1,9 +1,12 @@
-package day1
+package main
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 	"unicode"
+
+	"github.com/kaveenr/aoc23/commons"
 )
 
 func Part1(input string) (result int) {
@@ -45,3 +48,9 @@ func Part2(input string) (result int) {
 var (
 	numbers = []string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
 )
+
+func main() {
+	myPuzzleInput, _ := commons.LoadFile(`input.txt`)
+	fmt.Println("Part 1 Solution:", Part1(myPuzzleInput))
+	fmt.Println("Part 2 Solution:", Part2(myPuzzleInput))
+}
