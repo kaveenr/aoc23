@@ -20,7 +20,7 @@ run:
 	cd ./day$(day) && go run .
 
 test:
-	@go test  -cover $(shell go list ./...)
+	@go test  -cover $(shell go list ./...) -run=Example
 
 bench:
 	@go test -benchmem -run=^$ -cover -bench . $(shell go list ./...)
