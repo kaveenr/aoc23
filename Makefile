@@ -32,18 +32,18 @@ day = $(shell env TZ=EST date +"%-d")
 
 new:
 	@mkdir day$(day)
-	@cp dayn/dayn.go day$(day)/day$(day).go
-	@cp dayn/dayn_test.go day$(day)/day$(day)_test.go
+	@cp dayn/day.tmpl day$(day)/day$(day).go
+	@cp dayn/day_test.tmpl day$(day)/day$(day)_test.go
 	@sed -i '' 's/ayn/ay$(day)/g' day$(day)/day$(day).go
 	@sed -i '' 's/ayn/ay$(day)/g' day$(day)/day$(day)_test.go
 	@echo "Created from template ./day$(day)/"
 
 scrape:
 	mkdir -p puzzles
-	@curl https://adventofcode.com/$(year)/day/$(day)/input \
+	@curl -s https://adventofcode.com/$(year)/day/$(day)/input \
 		-b "session=${AOC_SESSION}" \
 		> inputs/day$(day).txt
-	@curl https://adventofcode.com/$(year)/day/$(day) \
+	@curl -s https://adventofcode.com/$(year)/day/$(day) \
 		-b "session=${AOC_SESSION}" \
 		| sed -n '/<main>/,/<\/main>/p' \
 		| pandoc  --from=html --to=plain \
@@ -51,8 +51,9 @@ scrape:
 	@echo "Scraped Day $(day) for $(year)"
 
 answer:
-	@curl -X 'POST' 'https://adventofcode.com/$(year)/day/$(day)/answer' \
+	@curl -s -X 'POST' 'https://adventofcode.com/$(year)/day/$(day)/answer' \
 		-b "session=${AOC_SESSION}" \
 		-H 'Content-Type: application/x-www-form-urlencoded' \
 		--data 'level=$(part)&answer=$(answer)' \
 		| sed -n '/<main>/,/<\/main>/p' \
+		| pandoc  --from=html --to=plain
