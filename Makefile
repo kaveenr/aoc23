@@ -7,11 +7,12 @@ help:
 	@echo "- bench: Run benchmarks"
 	@echo "- new day=<day_number>: Create from template"
 	@echo "- scrape year=<year> day=<day_number>: Scrape puzzle and input from site"
+	@echo "- scrape-all year=<year> day=<day_number>: Scrape from day 1 to specified"
 	@echo "- answer year=<year> day=<day_number> part=<part> answer=<answer>: Answer puzzle"
 	@echo ""
 	@echo "Hints: by default <year>,<day> will be set to current EST date"
 
-.PHONY: install run test
+.PHONY: install run test bench
 
 install:
 	go install
@@ -25,7 +26,7 @@ test:
 bench:
 	@go test -benchmem -run=^$ -cover -bench . $(shell go list ./...)
 
-.PHONY: new scrape
+.PHONY: new answer scrape scrape-all
 -include .env
 year = $(shell env TZ=EST date +"%Y")
 day = $(shell env TZ=EST date +"%-d")
@@ -58,3 +59,8 @@ scrape:
 		| pandoc  --from=html --to=plain \
 		> day$(day)/puzzle.txt
 	@echo "Scraped Day $(day) for $(year)"
+
+scrape-all:
+	@for i in $$(seq 1 $(day)); do \
+        make scrape day=$$i; \
+    done

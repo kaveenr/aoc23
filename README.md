@@ -20,6 +20,7 @@ Available targets:
 - bench: Run benchmarks
 - new day=<day_number>: Create from template
 - scrape year=<year> day=<day_number>: Scrape puzzle and input from site
+- scrape-all year=<year> day=<day_number>: Scrape from day 1 to specified
 - answer year=<year> day=<day_number> part=<part> answer=<answer>: Answer puzzle
 
 Hints: by default <year>,<day> will be set to current EST date
