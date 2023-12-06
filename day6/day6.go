@@ -45,7 +45,6 @@ func parseInput(input string) (races Races) {
 			Distance: parsedDist,
 		})
 	}
-	fmt.Println(times, dists)
 	return races
 }
 

@@ -26,24 +26,25 @@ func Part1(input string) (result int) {
 
 func Part2(input string) (result int) {
 	alm := parseInput(input)
-	locations := make([]int, 0)
-	for idx := 0; idx < len(alm.Seeds); idx += 2 {
-		start, num := alm.Seeds[idx], alm.Seeds[idx+1]
-		for seed := start; seed < start+num; seed++ {
-			locations = append(locations, alm.HumidityToLoc.Get(
-				alm.TempToHumidity.Get(
-					alm.LightToTemp.Get(
-						alm.WaterToLight.Get(
-							alm.FertilizerToWater.Get(
-								alm.SoilToFertilizer.Get(alm.SeedToSoil.Get(seed))))))))
+	allSeeds := alm.GetAllSeeds()
+	_, searchMax := alm.HumidityToLoc.RangeDest()
+	for loc := 0; loc < searchMax; loc++ {
+		seed := alm.SeedToSoil.ReverseGet(
+			alm.SoilToFertilizer.ReverseGet(
+				alm.FertilizerToWater.ReverseGet(
+					alm.WaterToLight.ReverseGet(
+						alm.LightToTemp.ReverseGet(
+							alm.TempToHumidity.ReverseGet(
+								alm.HumidityToLoc.ReverseGet(loc)))))))
+		if slices.Contains(allSeeds, seed) {
+			return loc
 		}
 	}
-	return slices.Min(locations)
+	return
 }
 
 func parseInput(input string) (res Almanac) {
 	scan := bufio.NewScanner(strings.NewReader(input))
-	// Scan Seeds
 	if scan.Scan() {
 		for _, seedStr := range strings.Split(strings.Split(scan.Text(), ":")[1], " ") {
 			seed, err := strconv.Atoi(seedStr)
@@ -96,6 +97,24 @@ func (rm RangeMap) Get(id int) int {
 	return id
 }
 
+func (rm RangeMap) ReverseGet(destID int) int {
+	for _, r := range rm {
+		if destID >= r.DestRangeStart && destID < (r.DestRangeStart+r.RangeN) {
+			return r.SrcRangeStart + (destID - r.DestRangeStart)
+		}
+	}
+	return destID
+}
+
+func (rm RangeMap) RangeDest() (min, max int) {
+	mins, maxes := make([]int, 0), make([]int, 0)
+	for _, r := range rm {
+		mins = append(mins, r.DestRangeStart)
+		maxes = append(maxes, r.DestRangeStart+r.RangeN)
+	}
+	return slices.Min(mins), slices.Max(maxes)
+}
+
 type Almanac struct {
 	Seeds             []int
 	SeedToSoil        RangeMap
@@ -105,6 +124,16 @@ type Almanac struct {
 	LightToTemp       RangeMap
 	TempToHumidity    RangeMap
 	HumidityToLoc     RangeMap
+}
+
+func (alm Almanac) GetAllSeeds() (res []int) {
+	for idx := 0; idx < len(alm.Seeds); idx += 2 {
+		start, num := alm.Seeds[idx], alm.Seeds[idx+1]
+		for seed := start; seed < start+num; seed++ {
+			res = append(res, seed)
+		}
+	}
+	return
 }
 
 func main() {
