@@ -10,30 +10,27 @@ import (
 )
 
 func Part1(input string) (result int) {
-	races := parseInput(input)
 	result = 1
-	for _, race := range races {
-		var wins int
-		for holdTime := 1; holdTime < race.Time; holdTime++ {
-			distTravel := holdTime * (race.Time - holdTime)
-			if distTravel > race.Distance {
-				wins++
-			}
-		}
-		result *= wins
+	for _, race := range parseInput(input) {
+		result *= solveRace(race)
 	}
-	return result
+	return
 }
 
 func Part2(input string) (result int) {
 	race := parseInputB(input)
+	result += solveRace(race)
+	return
+}
+
+func solveRace(race Race) (result int) {
 	for holdTime := 1; holdTime < race.Time; holdTime++ {
 		distTravel := holdTime * (race.Time - holdTime)
 		if distTravel > race.Distance {
 			result++
 		}
 	}
-	return result
+	return
 }
 
 func parseInput(input string) (races Races) {
@@ -53,9 +50,10 @@ func parseInput(input string) (races Races) {
 }
 
 func parseInputB(input string) (race Race) {
+	r, _ := regexp.Compile("([0-9]+)")
 	parts := strings.Split(input, "\n")
-	parsedTime, _ := strconv.Atoi(strings.ReplaceAll(strings.TrimSpace(strings.Split(parts[0], ":")[1]), " ", ""))
-	parsedDist, _ := strconv.Atoi(strings.ReplaceAll(strings.TrimSpace(strings.Split(parts[1], ":")[1]), " ", ""))
+	parsedTime, _ := strconv.Atoi(strings.Join(r.FindAllString(parts[0], -1), ""))
+	parsedDist, _ := strconv.Atoi(strings.Join(r.FindAllString(parts[1], -1), ""))
 	return Race{
 		Time:     parsedTime,
 		Distance: parsedDist,
