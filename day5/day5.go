@@ -26,7 +26,6 @@ func Part1(input string) (result int) {
 
 func Part2(input string) (result int) {
 	alm := parseInput(input)
-	allSeeds := alm.GetAllSeeds()
 	_, searchMax := alm.HumidityToLoc.RangeDest()
 	for loc := 0; loc < searchMax; loc++ {
 		seed := alm.SeedToSoil.ReverseGet(
@@ -36,7 +35,7 @@ func Part2(input string) (result int) {
 						alm.LightToTemp.ReverseGet(
 							alm.TempToHumidity.ReverseGet(
 								alm.HumidityToLoc.ReverseGet(loc)))))))
-		if slices.Contains(allSeeds, seed) {
+		if alm.ContainsSeed(seed) {
 			return loc
 		}
 	}
@@ -77,6 +76,9 @@ func parseMap(scan *bufio.Scanner) (res RangeMap) {
 		entry.RangeN, _ = strconv.Atoi(rangeParts[2])
 		res = append(res, entry)
 	}
+	slices.SortFunc(res, func(j, k RangeMapEntry) int {
+		return j.DestRangeStart - k.DestRangeStart
+	})
 	return res
 }
 
@@ -126,14 +128,14 @@ type Almanac struct {
 	HumidityToLoc     RangeMap
 }
 
-func (alm Almanac) GetAllSeeds() (res []int) {
+func (alm Almanac) ContainsSeed(seed int) bool {
 	for idx := 0; idx < len(alm.Seeds); idx += 2 {
 		start, num := alm.Seeds[idx], alm.Seeds[idx+1]
-		for seed := start; seed < start+num; seed++ {
-			res = append(res, seed)
+		if seed >= start && seed <= start+num {
+			return true
 		}
 	}
-	return
+	return false
 }
 
 func main() {

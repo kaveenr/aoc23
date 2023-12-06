@@ -23,11 +23,10 @@ func Test_Day5_Part1(t *testing.T) {
 	assert.Equal(t, 84470622, result)
 }
 
-// TODO: Shameful, bruteforce.
-// func Test_Day5_Part2(t *testing.T) {
-// 	result := Part2(myPuzzleInput)
-// 	assert.Equal(t, 26714516, result)
-// }
+func Test_Day5_Part2(t *testing.T) {
+	result := Part2(myPuzzleInput)
+	assert.Equal(t, 26714516, result)
+}
 
 func Benchmark_Day5_Part1(b *testing.B) {
 	for i := 0; i < b.N; i++ {
