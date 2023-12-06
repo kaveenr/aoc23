@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -36,35 +37,25 @@ func Part2(input string) (result int) {
 }
 
 func parseInput(input string) (races Races) {
+	r, _ := regexp.Compile("([0-9]+)")
 	parts := strings.Split(input, "\n")
-	times, dists := make([]int, 0), make([]int, 0)
-	for _, part := range strings.Split(strings.TrimSpace(strings.Split(parts[0], ":")[1]), " ") {
-		num, err := strconv.Atoi(strings.TrimSpace(part))
-		if err == nil {
-			times = append(times, num)
-		}
-	}
-	for _, part := range strings.Split(strings.TrimSpace(strings.Split(parts[1], ":")[1]), " ") {
-		num, err := strconv.Atoi(strings.TrimSpace(part))
-		if err == nil {
-			dists = append(dists, num)
-		}
-	}
+	times, dists := r.FindAllString(parts[0], -1), r.FindAllString(parts[1], -1)
 	for idx, time := range times {
+		parsedTime, _ := strconv.Atoi(time)
+		parsedDist, _ := strconv.Atoi(dists[idx])
 		races = append(races, Race{
-			Time:     time,
-			Distance: dists[idx],
+			Time:     parsedTime,
+			Distance: parsedDist,
 		})
 	}
+	fmt.Println(times, dists)
 	return races
 }
 
 func parseInputB(input string) (race Race) {
 	parts := strings.Split(input, "\n")
-	time := strings.ReplaceAll(strings.TrimSpace(strings.Split(parts[0], ":")[1]), " ", "")
-	dist := strings.ReplaceAll(strings.TrimSpace(strings.Split(parts[1], ":")[1]), " ", "")
-	parsedTime, _ := strconv.Atoi(time)
-	parsedDist, _ := strconv.Atoi(dist)
+	parsedTime, _ := strconv.Atoi(strings.ReplaceAll(strings.TrimSpace(strings.Split(parts[0], ":")[1]), " ", ""))
+	parsedDist, _ := strconv.Atoi(strings.ReplaceAll(strings.TrimSpace(strings.Split(parts[1], ":")[1]), " ", ""))
 	return Race{
 		Time:     parsedTime,
 		Distance: parsedDist,
