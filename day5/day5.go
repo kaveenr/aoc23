@@ -14,28 +14,25 @@ func Part1(input string) (result int) {
 	alm := parseInput(input)
 	locations := make([]int, len(alm.Seeds))
 	for idx, seed := range alm.Seeds {
-		locations[idx] = alm.HumidityToLoc.Get(
-			alm.TempToHumidity.Get(
-				alm.LightToTemp.Get(
-					alm.WaterToLight.Get(
-						alm.FertilizerToWater.Get(
-							alm.SoilToFertilizer.Get(alm.SeedToSoil.Get(seed)))))))
+		ref := seed
+		for _, cur := range alm.LookupMaps {
+			ref = cur.Get(ref)
+		}
+		locations[idx] = ref
 	}
 	return slices.Min(locations)
 }
 
 func Part2(input string) (result int) {
 	alm := parseInput(input)
-	_, searchMax := alm.HumidityToLoc.RangeDest()
+	_, searchMax := alm.LookupMaps[len(alm.LookupMaps)-1].RangeDest()
 	for loc := 0; loc < searchMax; loc++ {
-		seed := alm.SeedToSoil.ReverseGet(
-			alm.SoilToFertilizer.ReverseGet(
-				alm.FertilizerToWater.ReverseGet(
-					alm.WaterToLight.ReverseGet(
-						alm.LightToTemp.ReverseGet(
-							alm.TempToHumidity.ReverseGet(
-								alm.HumidityToLoc.ReverseGet(loc)))))))
-		if alm.ContainsSeed(seed) {
+		ref := loc
+		for fIdx, _ := range alm.LookupMaps {
+			cur := alm.LookupMaps[len(alm.LookupMaps)-1-fIdx]
+			ref = cur.ReverseGet(ref)
+		}
+		if alm.ContainsSeed(ref) {
 			return loc
 		}
 	}
@@ -53,13 +50,15 @@ func parseInput(input string) (res Almanac) {
 		}
 	}
 	scan.Scan()
-	res.SeedToSoil = parseMap(scan)
-	res.SoilToFertilizer = parseMap(scan)
-	res.FertilizerToWater = parseMap(scan)
-	res.WaterToLight = parseMap(scan)
-	res.LightToTemp = parseMap(scan)
-	res.TempToHumidity = parseMap(scan)
-	res.HumidityToLoc = parseMap(scan)
+	res.LookupMaps = []RangeMap{
+		parseMap(scan),
+		parseMap(scan),
+		parseMap(scan),
+		parseMap(scan),
+		parseMap(scan),
+		parseMap(scan),
+		parseMap(scan),
+	}
 	return res
 }
 
@@ -118,14 +117,8 @@ func (rm RangeMap) RangeDest() (min, max int) {
 }
 
 type Almanac struct {
-	Seeds             []int
-	SeedToSoil        RangeMap
-	SoilToFertilizer  RangeMap
-	FertilizerToWater RangeMap
-	WaterToLight      RangeMap
-	LightToTemp       RangeMap
-	TempToHumidity    RangeMap
-	HumidityToLoc     RangeMap
+	Seeds      []int
+	LookupMaps []RangeMap
 }
 
 func (alm Almanac) ContainsSeed(seed int) bool {
